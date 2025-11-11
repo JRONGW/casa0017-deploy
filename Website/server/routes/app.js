@@ -4,16 +4,24 @@ import { db } from "../db/config.js";
 import path from "path";
 import { fileURLToPath } from "url";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname  = path.dirname(__filename);
+
+// serve /client
+const CLIENT_DIR = path.resolve(__dirname, "../../client");
+app.use(express.static(CLIENT_DIR));
+
+// ✅ serve only the three package from node_modules at /vendor/three
+const THREE_DIR = path.resolve(__dirname, "../../node_modules/three");
+app.use("/vendor/three", express.static(THREE_DIR, { immutable: true, maxAge: "1y" }));
+
+
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 
 
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const CLIENT_DIR = path.resolve(__dirname, "../../client"); 
 
 
 

@@ -19,23 +19,27 @@ try {
   console.error("❌ database connect failed：", err.message);
 }*/
 import sqlite3 from "sqlite3";
-import { open } from "sqlite"; 
+import { open } from "sqlite";
+import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
-// __dirname setup //
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname  = path.dirname(__filename);
 
-// SQLite connection //
-const dbPath = path.resolve(__dirname, "eco_env.sqlite");
+// Use /data/eco_env.sqlite on Fly (from env), else local file for dev
+const defaultLocal = path.resolve(__dirname, "../db/eco_env.sqlite");
+const dbPath = process.env.DB_PATH || defaultLocal;
 
 console.log("🔗 SQLite path:", dbPath);
 
-export const db = await open({
-  filename: dbPath,
-  driver: sqlite3.Database,
-});
-console.log("✅ database connect successfully！");
+export const db = await open({ filename: dbPath, driver: sqlite3.Database });
 
-await db.exec("PRAGMA journal_mode = DELETE;");
+// Reasonable server PRAGMAs
+await db.exec("PRAGMA journal_mode = WAL;");
+await db.exec("PRAGMA synchronous = NORMAL;");
+
+// Optional: log current modes
+const jm  = await db.get("PRAGMA journal_mode;");
+const syn = await db.get("PRAGMA synchronous;");
+console.log(`Journal mode: ${jm.journal_mode}, Synchronous: ${syn.synchronous}`);
