@@ -7,22 +7,22 @@ export default defineConfig({
   root: 'client',
   publicDir: 'public',
   build: {
-    outDir: resolve(__dirname, 'dist'),
+    outDir: '../dist',                 // stays inside the project, relative to root
+    emptyOutDir: true,
     rollupOptions: {
-      input:
-      {
-        home: resolve(__dirname, 'client/index.html'),
-        timeline: resolve(__dirname, 'client/timeline.html'),
-        about: resolve(__dirname, 'client/about.html'),
-        country: resolve(__dirname, 'client/country.html'),
+      input: {
+        home:     'index.html',
+        timeline: 'timeline.html',
+        about:    'about.html',
+        country:  'country.html',
       }
     }
   },
   server: {
-    port: 5173, proxy: {
+    port: 8080, proxy: {
       '/api':
       { //target: 'http://10.129.111.24:3000',//
-        target: 'http://localhost:3000',
+        target: 'http://localhost:8080',
         changeOrigin: true,
         secure: false
       }

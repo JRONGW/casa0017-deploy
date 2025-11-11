@@ -1,3 +1,16 @@
+import { Chart, registerables } from 'chart.js';
+import annotationPlugin from 'chartjs-plugin-annotation';
+
+
+Chart.register(...registerables, annotationPlugin, {
+  id: 'preservedDrawingsAndDeviation',
+  afterDraw: (chart) => {
+    if (show_flag && drawnSegments.length > 0) drawDeviation(chart);
+    redrawUserLines();
+  }
+});
+
+
 const API_BASE = window.__API_BASE__ || import.meta?.env?.VITE_API_BASE || "";
 
 
@@ -46,7 +59,7 @@ if (window['chartjs-plugin-annotation']) {
   console.error('Annotation plugin not found');
 }
 
-function init() {
+export function init() {
     canvas = document.getElementById('canvasChart')
     ctx = canvas.getContext('2d');
     w = canvas.width;
@@ -67,7 +80,7 @@ function init() {
     }, false)
 }
 
-async function fetchCountryGDP(iso3) {
+export async function fetchCountryGDP(iso3) {
   try {
     const response = await fetch(`${API_BASE}/api/country/${iso3}/gdp`);
     if (!response.ok) throw new Error('Network response was not ok');
