@@ -169,7 +169,11 @@ body.compact{
 }
 .member-name{ font-size: 1.05rem; margin-bottom: 0.25rem; }
 .member-role{ font-size: 0.95rem; opacity: 0.8; }
-
+.aim{
+  font-size: 0.95rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 /* =========================
    MOBILE TWEAKS
    ========================= */
