@@ -148,9 +148,6 @@ app.get(/.*\.html$/, (req, res) => {
   res.sendFile(path.join(CLIENT_DIR, req.path.replace(/^\//, "")));
 });
 
-app.use("/js",  express.static(path.join(root, "Website/client/js")));
-app.use("/css", express.static(path.join(root, "Website/client/css")));
-app.use("/img", express.static(path.join(root, "Website/client/img")));
 
 app.get("/", (req, res) => {
   res.sendFile(path.resolve(CLIENT_DIR, "index.html"));
