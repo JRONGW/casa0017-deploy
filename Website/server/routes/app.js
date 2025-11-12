@@ -129,7 +129,7 @@ app.get("/api/country/:iso3/policies", async (req, res, next) => {
       FROM datapoint d
       JOIN indicator i ON i.id = d.indicator_id
       JOIN country  c ON c.id = d.country_id
-      WHERE c.iso3 = ? AND i.igroup = 'POL' AND d.value > 0
+      WHERE c.iso3 = ? AND i.igroup = 'policy' AND d.value > 0
       ORDER BY d.year
       `,
       [req.params.iso3]
